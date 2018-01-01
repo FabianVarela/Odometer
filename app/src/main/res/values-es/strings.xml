@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Odometro</string>
+    <string name="distance">Distancia</string>
+
+    <string name="distance_value">%1$,.2f meters</string>
+</resources>
