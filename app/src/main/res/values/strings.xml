@@ -2,5 +2,5 @@
     <string name="app_name">Odometer</string>
     <string name="distance">Distance</string>
 
-    <string name="distance_value">%1$,.2f meters</string>
+    <string name="distance_value">%1$,.2f miles</string>
 </resources>

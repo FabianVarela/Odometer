@@ -17,9 +17,8 @@ public class OdometerService extends Service {
     private final IBinder binder = new OdometerBinder();
     private static Location lastPosition = null;
     private static double distance;
-
-    public OdometerService() {
-    }
+    private LocationListener listener;
+    private LocationManager manager;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -34,7 +33,7 @@ public class OdometerService extends Service {
 
     @Override
     public void onCreate() {
-        LocationListener listener = new LocationListener() {
+        listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 if (lastPosition == null)
@@ -57,13 +56,23 @@ public class OdometerService extends Service {
             }
         };
 
-        LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (manager != null && listener != null) {
+            manager.removeUpdates(listener);
+
+            manager = null;
+            listener = null;
+        }
     }
 
     public double getDistance() {
-        return distance;
+        return distance / 1609.344;
     }
 }

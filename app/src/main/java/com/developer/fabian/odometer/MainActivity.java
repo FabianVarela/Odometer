@@ -1,6 +1,8 @@
 package com.developer.fabian.odometer;
 
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
@@ -26,10 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if (connected) {
-            unbindService(connection);
-            connected = false;
-        }
+        Intent intent = new Intent(this, OdometerService.class);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
